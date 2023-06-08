@@ -10,12 +10,8 @@ entries:
         url: mailto:dooraim@yahoo.com
       - title: GitHub repository
         url: https://github.com/dooraim
-
-  - title: list notes
-    entries:
-      - title: C
-        url: _c/compiling-c-file
-      - title: Linux
+      - title: fosstodon.org/@dooraim
+        url: https://fosstodon.org/@dooraim
 
   - title: all posts
     post_list:
