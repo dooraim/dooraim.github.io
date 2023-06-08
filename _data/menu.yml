@@ -6,7 +6,8 @@ entries:
     entries:
       - title: portfolio (work in progress ...)
         url:
-      - title: dooraim@yahoo.com
+      - title: email
+        url: mailto:dooraim@yahoo.com
       - title: GitHub repository
         url: https://github.com/dooraim
 
