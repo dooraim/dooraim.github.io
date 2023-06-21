@@ -15,7 +15,21 @@ entries:
 
   - title: all posts
     post_list:
-      limit: 5
+      limit: 3
       show_more: true
       show_more_text: See archive...
       show_more_url: archive.html
+
+  - title: C posts
+    post_list:
+      limit: 3
+      show_more: true
+      show_more_text: See more posts...
+      show_more_url: archive-c.html
+
+  - title: Linux posts
+    post_list:
+      limit: 3
+      show_more: true
+      show_more_text: See more posts...
+      show_more_url: archive-linux.html
