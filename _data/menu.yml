@@ -17,11 +17,10 @@ entries:
     post_list:
       limit: 3
       show_more: true
-      show_more_text: See archive...
-      show_more_url: archive.html
 
   - title: C posts
     post_list:
+      category: c
       limit: 3
       show_more: true
       show_more_text: See more posts...
@@ -29,6 +28,7 @@ entries:
 
   - title: Linux posts
     post_list:
+      category: linux
       limit: 3
       show_more: true
       show_more_text: See more posts...
