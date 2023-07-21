@@ -99,6 +99,38 @@ ctrl-d can be used to close the window or panes **without** using ctrl-a.
 | \| | divide la pagina in verticale |
 | - | divide la pagina in orizzontale |
 
+## Script Tmux
+
+Per poter velocizzare la creazione del ambiente Tmux, si è creato lo script seguente.
+
+* `my_array`: si definiscono il nome delle Windows da associare a Tmux
+* `session_name`: si definisce il nome da associare alla sessione di Tmux
+
+```bash
+#!/bin/bash
+
+# Definisci l'array degli elementi
+elements=("Window1" "Window2" "Window3")
+
+# Definisci il nome della sessione di Tmux
+session_name="MySession"
+
+# Crea una nuova sessione di Tmux con il nome specificato
+tmux new-session -d -s "$session_name"
+
+# Loop attraverso gli elementi dell'array e crea una finestra per ciascuno
+for element in "${elements[@]}"; do
+  # Aggiunge una nuova finestra con il nome dell'elemento dell'array
+  tmux new-window -t "$session_name": -n "$element"
+done
+
+# Seleziona la prima finestra (opzionale)
+tmux select-window -t "$session_name":0
+
+# Allega la sessione di Tmux
+tmux attach-session -t "$session_name"
+```
+
 
 ## Riferimenti
 
