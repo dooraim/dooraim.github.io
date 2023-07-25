@@ -37,6 +37,7 @@ title: Linux Command cheat sheet
 - [](#)
 - [Cancellare un file con find](#cancellare-un-file-con-find)
 - [Numero di file in una sotto cartella](#numero-di-file-in-una-sotto-cartella)
+- [Verifica di Out Of Memory](#verifica-di-out-of-memory)
 - [Riferimenti](#riferimenti)
 
 # Cancellare un file/cartella con find
@@ -370,6 +371,14 @@ Se invece si vuole solo visualizzare il numero di file in tutte le sotto directo
 
 ```bash
 $ find . -type f -print | wc -l
+```
+
+# Verifica di Out Of Memory
+
+Per verificare se il sistema è in oom, eseguire il comando seguente
+
+```
+$ dmesg -T -l 3 | tail -n 10
 ```
 
 # Riferimenti
