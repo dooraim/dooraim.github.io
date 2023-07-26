@@ -33,3 +33,11 @@ entries:
       show_more: true
       show_more_text: See more posts...
       show_more_url: archive-linux.html
+
+  - title: Yocto posts
+    post_list:
+      category: yocto
+      limit: 3
+      show_more: true
+      show_more_text: See more posts...
+      show_more_url: archive-yocto.html
