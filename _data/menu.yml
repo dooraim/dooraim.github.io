@@ -41,3 +41,11 @@ entries:
       show_more: true
       show_more_text: See more posts...
       show_more_url: archive-yocto.html
+
+  - title: Git posts
+    post_list:
+      category: git
+      limit: 3
+      show_more: true
+      show_more_text: See more posts...
+      show_more_url: archive-git.html
