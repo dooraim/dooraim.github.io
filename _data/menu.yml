@@ -26,6 +26,22 @@ entries:
       show_more_text: See more posts...
       show_more_url: archive-c.html
 
+  - title: GCC posts
+    post_list:
+      category: gcc
+      limit: 3
+      show_more: true
+      show_more_text: See more posts...
+      show_more_url: archive-gcc.html
+
+  - title: Git posts
+    post_list:
+      category: git
+      limit: 3
+      show_more: true
+      show_more_text: See more posts...
+      show_more_url: archive-git.html
+
   - title: Linux posts
     post_list:
       category: linux
@@ -41,11 +57,3 @@ entries:
       show_more: true
       show_more_text: See more posts...
       show_more_url: archive-yocto.html
-
-  - title: Git posts
-    post_list:
-      category: git
-      limit: 3
-      show_more: true
-      show_more_text: See more posts...
-      show_more_url: archive-git.html
