@@ -28,13 +28,12 @@ title: Linux Command cheat sheet
 - [Copiare un file ed avere una progress bar](#copiare-un-file-ed-avere-una-progress-bar)
 - [Generatore di password casuali](#generatore-di-password-casuali)
 - [Lista dei file aperti](#lista-dei-file-aperti)
-  - [Decomprimere file tar.bz2 in una cartella](#decomprimere-file-tarbz2-in-una-cartella)
-  - [Correggere chiavette corrotte](#correggere-chiavette-corrotte)
+- [Decomprimere file tar.bz2 in una cartella](#decomprimere-file-tarbz2-in-una-cartella)
+- [Correggere chiavette corrotte](#correggere-chiavette-corrotte)
 - [Cerca il nome del file che contiene una determinata stringa](#cerca-il-nome-del-file-che-contiene-una-determinata-stringa)
 - [Dimensione di una cartella e le sue sottocartelle](#dimensione-di-una-cartella-e-le-sue-sottocartelle)
 - [Dimensione di una cartella e le sue sottocartelle escludendo una cartella](#dimensione-di-una-cartella-e-le-sue-sottocartelle-escludendo-una-cartella)
-  - [Formattare una chiavetta USB](#formattare-una-chiavetta-usb)
-- [](#)
+- [Formattare una chiavetta USB](#formattare-una-chiavetta-usb)
 - [Cancellare un file con find](#cancellare-un-file-con-find)
 - [Numero di file in una sotto cartella](#numero-di-file-in-una-sotto-cartella)
 - [Verifica di Out Of Memory](#verifica-di-out-of-memory)
@@ -288,14 +287,14 @@ mkpasswd -l <lunghezza password>
 lsof
 ```
 
-## Decomprimere file tar.bz2 in una cartella
+# Decomprimere file tar.bz2 in una cartella
 
 ```bash
 mkdir test_rootfs
 tar -xf <nome file>.tar.bz2 -C ./test_rootfs/.
 ```
 
-## Correggere chiavette corrotte
+# Correggere chiavette corrotte
 
 In caso di errore come questo: **FAT-fs (vda1): Volume was not properly unmounted. Some data may be corrupt. Please run fsck.**, eseguire il seguente comando:
 ```
@@ -325,8 +324,8 @@ du . -hacS --apparent-size
 du . --exclude "**/.git" -hacS --apparent-size
 ```
 
-## Formattare una chiavetta USB
-#
+# Formattare una chiavetta USB
+
 [Link](https://recoverit.wondershare.it/flashdrive-recovery/linux-format-usb.html)
 Eseguire il comando:
 ```bash
