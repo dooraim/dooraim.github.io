@@ -11,6 +11,7 @@ title: Linux Perf
   - [vmlinux](#vmlinux)
   - [parametri](#parametri)
     - [esempi](#esempi)
+- [analisi codice sorgente](#analisi-codice-sorgente)
 
 
 # Installazione
@@ -18,6 +19,11 @@ title: Linux Perf
 Per usare `perf` installa i seguenti package
 
 ```bash
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get dist-upgrade
+reboot
+sudo apt-get install linux-headers-$(uname -r)
 sudo apt install linux-tools-$(uname -r) linux-tools-generic
 ```
 
@@ -364,3 +370,58 @@ Overhead  Command            Shared Object        Symbol
 In questo esempio, `perf top` sta ordinando l'output in base al nome del comando (`--sort comm`) in ordine alfabetico crescente.
 
 Questi sono solo esempi teorici e i risultati reali possono variare a seconda delle attività del sistema durante l'esecuzione di `perf top`.
+
+# analisi codice sorgente
+
+Ecco un esempio di come utilizzare `perf` per analizzare il codice sorgente correlato a una funzione specifica:
+
+Supponiamo di avere un programma C molto semplice, denominato "my_program.c", che contiene una funzione chiamata "my_function" che vogliamo profilare.
+
+Contenuto di "my_program.c":
+
+```c
+#include <stdio.h>
+
+void my_function() {
+    for (int i = 0; i < 1000000; i++) {
+        printf("Hello, world!\n");
+    }
+}
+
+int main() {
+    my_function();
+    return 0;
+}
+```
+
+Compiliamo il programma con i simboli di debug abilitati:
+
+```bash
+gcc -g -o my_program my_program.c
+```
+
+Ora eseguiamo la profilazione di "my_program" utilizzando `perf`:
+
+```bash
+sudo perf record -g ./my_program
+```
+
+Aspetta che il programma si concluda (poiché abbiamo messo un ciclo for che esegue un milione di volte, ci vorrà qualche secondo).
+
+Successivamente, analizziamo i dati raccolti con `perf report`:
+
+```bash
+sudo perf report
+```
+
+L'output mostrerà una tabella con le funzioni e i simboli che hanno richiesto il maggior tempo di CPU durante l'esecuzione del programma. Cerca la voce corrispondente alla tua funzione "my_function" e prendi nota del suo indirizzo (generalmente in esadecimale).
+
+Ora, utilizziamo `perf annotate` per visualizzare il codice sorgente correlato alla funzione "my_function":
+
+```bash
+sudo perf annotate -s my_function
+```
+
+Questo visualizzerà il codice sorgente di "my_function" con i numeri di linea delle istruzioni che hanno richiesto la maggior quantità di tempo CPU durante la profilazione. Potrai vedere le linee specifiche che hanno consumato più tempo e ottenere un'idea di quale parte del codice può essere ottimizzata o richiede ulteriori modifiche per migliorare le prestazioni.
+
+Ricorda che il processo di profilazione può variare a seconda del programma e delle sue esigenze, ma questo esempio ti darà un'idea di come utilizzare `perf` per analizzare il codice sorgente correlato a una funzione specifica e identificare punti critici delle prestazioni.
