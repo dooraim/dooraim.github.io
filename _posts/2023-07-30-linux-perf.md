@@ -12,6 +12,8 @@ title: Linux Perf
   - [parametri](#parametri)
     - [esempi](#esempi)
 - [analisi codice sorgente](#analisi-codice-sorgente)
+- [Errori](#errori)
+  - [perf.data file has no samples](#perfdata-file-has-no-samples)
 
 
 # Installazione
@@ -425,3 +427,9 @@ sudo perf annotate -s my_function
 Questo visualizzerà il codice sorgente di "my_function" con i numeri di linea delle istruzioni che hanno richiesto la maggior quantità di tempo CPU durante la profilazione. Potrai vedere le linee specifiche che hanno consumato più tempo e ottenere un'idea di quale parte del codice può essere ottimizzata o richiede ulteriori modifiche per migliorare le prestazioni.
 
 Ricorda che il processo di profilazione può variare a seconda del programma e delle sue esigenze, ma questo esempio ti darà un'idea di come utilizzare `perf` per analizzare il codice sorgente correlato a una funzione specifica e identificare punti critici delle prestazioni.
+
+# Errori
+
+## perf.data file has no samples
+
+Nel caso appaia il seguente errore, usare `-e cpu-clock`
