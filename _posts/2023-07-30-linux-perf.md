@@ -4,7 +4,7 @@ category: linux
 title: Linux Perf
 ---
 
-- [Installazione](#installazione)
+- [Installazione `perf` su Ubuntu](#installazione-perf-su-ubuntu)
 - [List avaible event](#list-avaible-event)
 - [perf top](#perf-top)
   - [introduzione al comando](#introduzione-al-comando)
@@ -14,9 +14,10 @@ title: Linux Perf
 - [analisi codice sorgente](#analisi-codice-sorgente)
 - [Errori](#errori)
   - [perf.data file has no samples](#perfdata-file-has-no-samples)
+- [Yocto](#yocto)
 
 
-# Installazione
+# Installazione `perf` su Ubuntu
 
 Per usare `perf` installa i seguenti package
 
@@ -25,6 +26,8 @@ sudo apt-get update
 sudo apt-get upgrade
 sudo apt-get dist-upgrade
 reboot
+sudo apt-get update
+sudo apt-get install linux-image-$(uname -r)-dbgsym
 sudo apt-get install linux-headers-$(uname -r)
 sudo apt install linux-tools-$(uname -r) linux-tools-generic
 ```
@@ -163,7 +166,9 @@ Ricorda che l'output effettivo potrebbe variare a seconda dell'applicazione, del
 
 Per migliorare l'uso di `perf top` conviene installare il binario `vmlinux`
 
-```
+In Ubuntu è possibile installare `vmlinux` usando il comando seguente.
+
+```bash
 sudo apt-get update && sudo apt-get install linux-image-$(uname -r)-dbgsym
 ```
 
@@ -377,7 +382,7 @@ Questi sono solo esempi teorici e i risultati reali possono variare a seconda de
 
 Ecco un esempio di come utilizzare `perf` per analizzare il codice sorgente correlato a una funzione specifica:
 
-Supponiamo di avere un programma C molto semplice, denominato "my_program.c", che contiene una funzione chiamata "my_function" che vogliamo profilare.
+Supponiamo di avere un programma C molto semplice, denominato `my_program.c`, che contiene una funzione chiamata `my_function` che vogliamo profilare.
 
 Contenuto di "my_program.c":
 
@@ -408,6 +413,19 @@ Ora eseguiamo la profilazione di "my_program" utilizzando `perf`:
 sudo perf record -g ./my_program
 ```
 
+```bash
+dooraim@ubuntu:~/temp$ sudo perf record -e cpu-clock -g ./my_program
+Hello, world!
+Hello, world!
+...
+Hello, world!
+Hello, world!
+Hello, world!
+[ perf record: Woken up 2 times to write data ]
+[ perf record: Captured and wrote 0.725 MB perf.data (4734 samples) ]
+
+```
+
 Aspetta che il programma si concluda (poiché abbiamo messo un ciclo for che esegue un milione di volte, ci vorrà qualche secondo).
 
 Successivamente, analizziamo i dati raccolti con `perf report`:
@@ -415,6 +433,8 @@ Successivamente, analizziamo i dati raccolti con `perf report`:
 ```bash
 sudo perf report
 ```
+
+![](image/../../image/perf/linux_perf_1.png)
 
 L'output mostrerà una tabella con le funzioni e i simboli che hanno richiesto il maggior tempo di CPU durante l'esecuzione del programma. Cerca la voce corrispondente alla tua funzione "my_function" e prendi nota del suo indirizzo (generalmente in esadecimale).
 
@@ -424,6 +444,8 @@ Ora, utilizziamo `perf annotate` per visualizzare il codice sorgente correlato a
 sudo perf annotate -s my_function
 ```
 
+![](../image/linux_perf_2.png)
+
 Questo visualizzerà il codice sorgente di "my_function" con i numeri di linea delle istruzioni che hanno richiesto la maggior quantità di tempo CPU durante la profilazione. Potrai vedere le linee specifiche che hanno consumato più tempo e ottenere un'idea di quale parte del codice può essere ottimizzata o richiede ulteriori modifiche per migliorare le prestazioni.
 
 Ricorda che il processo di profilazione può variare a seconda del programma e delle sue esigenze, ma questo esempio ti darà un'idea di come utilizzare `perf` per analizzare il codice sorgente correlato a una funzione specifica e identificare punti critici delle prestazioni.
@@ -432,4 +454,81 @@ Ricorda che il processo di profilazione può variare a seconda del programma e d
 
 ## perf.data file has no samples
 
-Nel caso appaia il seguente errore, usare `-e cpu-clock`
+L'errore "The perf.data data has no samples!" si verifica quando il file `perf.data`, che viene utilizzato dal comando `perf annotate`, non contiene campioni di dati. Questo significa che non ci sono dati di esecuzione per la funzione `my_function` o potrebbe essere presente un altro problema nel processo di raccolta dei dati.
+
+Il comando `perf annotate` viene utilizzato per visualizzare l'assembly del codice e annotazioni dei simboli utilizzando i dati di profiling raccolti da `perf`. Il file `perf.data` è generato quando si esegue il comando `perf record` per raccogliere i dati di esecuzione.
+
+Per risolvere il problema, assicurati di eseguire i seguenti passaggi:
+
+1. Controlla che tu abbia eseguito il comando `perf record` per raccogliere i dati di esecuzione. Ad esempio, il comando potrebbe essere simile a:
+
+   ```bash
+   sudo perf record -e cpu-cycles -g -- your_program
+   ```
+
+   Questo eseguirà `your_program` e raccoglierà i dati di esecuzione utilizzando l'evento "cpu-cycles". Puoi cambiare l'evento di profiling o aggiungere altre opzioni in base alle tue esigenze.
+
+2. Verifica che `perf.data` sia presente nella directory corrente o specifica il percorso completo del file se si trova altrove.
+
+3. Assicurati di specificare correttamente il nome della funzione `my_function` quando esegui il comando `perf annotate`.
+
+Se hai seguito correttamente questi passaggi e il problema persiste, potrebbe esserci un problema con la raccolta dei dati di esecuzione tramite `perf record`, o la funzione `my_function` potrebbe non essere stata eseguita o campionata durante la registrazione.
+
+Inoltre, potresti voler controllare la versione di `perf` e assicurarti di avere la versione più recente, poiché potrebbero essere stati corretti bug o problemi noti nelle versioni precedenti.
+
+Se il problema persiste e hai bisogno di ulteriore assistenza, potresti fornire maggiori dettagli sulle operazioni eseguite e sul tuo ambiente di sistema per poter fornire una soluzione più specifica.
+
+# Yocto
+
+Si consiglia di aggiungere nella ricetta le seguenti righe
+
+Queste righe sono parti di una ricetta per la costruzione di un'immagine del sistema operativo utilizzando il framework Yocto Project. Questa ricetta viene utilizzata per configurare l'immagine in modo da includere il supporto per il debug e strumenti di profilazione. Analizziamo le righe una per una:
+
+1. `EXTRA_IMAGE_FEATURES:append = " dbg-pkgs debug-tweaks tools-debug tools-sdk tools-profile"`
+
+   Qui stiamo aggiungendo ulteriori funzionalità all'immagine. In particolare, stiamo aggiungendo le seguenti feature:
+   - `dbg-pkgs`: Includi i pacchetti di debug. Questi pacchetti conterranno i simboli di debug e altre informazioni di debug.
+   - `debug-tweaks`: Abilita alcune modifiche specifiche per il debug, come l'uso del demone GDB e altre impostazioni di debug.
+   - `tools-debug`: Includi gli strumenti per il debug, come gdbserver.
+   - `tools-sdk`: Includi il Software Development Kit (SDK) per consentire lo sviluppo e il debug delle applicazioni.
+   - `tools-profile`: Includi strumenti di profilazione per analizzare le prestazioni del sistema.
+
+2. `IMAGE_INSTALL:append = "kernel-vmlinux"`
+
+   Stiamo aggiungendo il pacchetto `kernel-vmlinux` all'elenco dei pacchetti da installare nell'immagine. Questo pacchetto contiene l'immagine del kernel Linux con i simboli di debug.
+
+3. `DEBUG_BUILD = "1"`
+
+   Questa variabile indica al sistema di effettuare una build del software con informazioni di debug. Ciò abilita l'inclusione di simboli di debug nei pacchetti e nel kernel.
+
+4. `INHIBIT_PACKAGE_STRIP = "1"`
+
+   Impediamo la rimozione dei simboli di debug dai pacchetti. Di solito, i pacchetti vengono "strippati" per rimuovere le informazioni di debug e ridurre le dimensioni del pacchetto. Con questa impostazione, i simboli di debug non verranno rimossi.
+
+5. `INHIBIT_PACKAGE_DEBUG_SPLIT= "1"`
+
+   Questa opzione impedisce la suddivisione dei simboli di debug in un file separato. Di solito, i simboli di debug vengono estratti in pacchetti separati, ma con questa impostazione, i simboli rimarranno all'interno dei pacchetti principali.
+
+6. `PACKAGE_DEBUG_SPLIT_STYLE = "dbg-pkg"`
+   `PACKAGE_DEBUG_SPLIT = "1"`
+
+   Queste impostazioni specificano lo stile di suddivisione dei pacchetti di debug. In questo caso, stiamo utilizzando lo stile "dbg-pkg", che mantiene i simboli di debug nei pacchetti principali.
+
+7. `IMAGE_GEN_DEBUGFS = "1"`
+
+   Stiamo abilitando la generazione di un filesystem di debug (debugfs) nell'immagine. Il debugfs è un filesystem virtuale che può essere montato per ottenere informazioni di debug dinamiche dal kernel e dai driver del sistema.
+
+8. `IMAGE_FSTYPES_DEBUGFS = "tar.bz2"`
+
+   Stiamo specificando il formato dell'immagine generata con debugfs abilitato. In questo caso, l'immagine di debugfs verrà compressa utilizzando il formato tar.bz2.
+
+Queste configurazioni vengono utilizzate per personalizzare l'immagine generata da Yocto Project in modo da includere simboli di debug e strumenti utili per il debug e la profilazione del sistema.
+
+Una volta completato il build con Yocto, per creare un rootfs che contenga anche i simboli di debug si consiglia di eseguire il codice sotto. Utilizzare quindi il rootfs che viene creato sulla scheda.
+
+```bash
+$ mkdir debugfs
+$ cd debugfs
+$ tar xvfj build-dir/tmp/deploy/images/machine/image.rootfs.tar.bz2
+$ tar xvfj build-dir/tmp/deploy/images/machine/image-dbg.rootfs.tar.bz2
+```
