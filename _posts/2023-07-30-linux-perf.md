@@ -463,10 +463,10 @@ Per risolvere il problema, assicurati di eseguire i seguenti passaggi:
 1. Controlla che tu abbia eseguito il comando `perf record` per raccogliere i dati di esecuzione. Ad esempio, il comando potrebbe essere simile a:
 
    ```bash
-   sudo perf record -e cpu-cycles -g -- your_program
+   sudo perf record -e cpu-clock -g -- your_program
    ```
 
-   Questo eseguirà `your_program` e raccoglierà i dati di esecuzione utilizzando l'evento "cpu-cycles". Puoi cambiare l'evento di profiling o aggiungere altre opzioni in base alle tue esigenze.
+   Questo eseguirà `your_program` e raccoglierà i dati di esecuzione utilizzando l'evento "cpu-clock". Puoi cambiare l'evento di profiling o aggiungere altre opzioni in base alle tue esigenze.
 
 2. Verifica che `perf.data` sia presente nella directory corrente o specifica il percorso completo del file se si trova altrove.
 
