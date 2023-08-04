@@ -8,6 +8,7 @@ title: Phy Ethernet
   - [Speed and Duplex Selection](#speed-and-duplex-selection)
   - [Master and Slave Resolution](#master-and-slave-resolution)
   - [Pause and Asymmetrical Pause Resolution](#pause-and-asymmetrical-pause-resolution)
+  - [Symmetric Pause](#symmetric-pause)
     - [Pause Frames](#pause-frames)
   - [Next Page Support](#next-page-support)
   - [Parallel Detection](#parallel-detection)
@@ -92,6 +93,16 @@ Il meccanismo di "Pause" è definito nello standard IEEE 802.3x ed è utilizzato
 Quando i dispositivi hanno capacità asimmetriche, il meccanismo di "Pause" viene utilizzato per regolare la trasmissione dei dati tra i dispositivi in base alle loro capacità. Ad esempio, se un dispositivo supporta solo la modalità half-duplex e l'altro supporta la modalità full-duplex, il dispositivo half-duplex può inviare il segnale di "Pause" per richiedere al dispositivo full-duplex di sospendere temporaneamente la trasmissione quando il canale è congestionato. In questo modo, i due dispositivi si sincronizzano e gestiscono il flusso del traffico in modo appropriato, tenendo conto delle loro capacità asimmetriche.
 
 L'utilizzo dell'Asymmetrical Pause Resolution nel RGMII è importante per garantire una comunicazione stabile e senza problemi tra i dispositivi con capacità diverse sulla stessa connessione Ethernet.
+
+## Symmetric Pause
+
+Nel contesto della PHY (Physical Layer) Ethernet, il termine "Symmetric Pause" si riferisce a una funzionalità che permette a due dispositivi connessi a un link Ethernet di comunicarsi tra loro per negoziare e regolare il flusso di dati in modo simmetrico. Questa funzionalità è parte dell'Ethernet a 1000 Mbps, comunemente noto come Gigabit Ethernet.
+
+I pause simmetriche sono definite dall'IEEE 802.3x e sono un'estensione dell'originale "Flow Control" (controllo del flusso) implementato a 10 Mbps e 100 Mbps. Questo meccanismo è pensato per evitare la congestione della rete e migliorare le prestazioni generali della comunicazione. Quando una stazione (o dispositivo) su un link Ethernet richiede una pausa simmetrica, informa l'altro dispositivo che desidera fermare temporaneamente la trasmissione di dati.
+
+Quando un dispositivo riceve una richiesta di pausa simmetrica, rispetta la richiesta e interrompe temporaneamente la trasmissione di dati per il periodo specificato nella richiesta. Questo dà tempo alla stazione di destinazione di elaborare i dati ricevuti e liberare eventuali buffer congestionati prima di riprendere la comunicazione.
+
+In sintesi, le pause simmetriche sono un meccanismo di controllo del flusso bidirezionale che permette ai dispositivi di negoziare e gestire insieme la velocità del trasferimento dati per evitare perdita di pacchetti e congestioni sulla rete.
 
 ### Pause Frames
 
