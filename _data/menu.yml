@@ -26,6 +26,14 @@ entries:
       show_more_text: See more posts...
       show_more_url: archive-c.html
 
+  - title: Debug posts
+    post_list:
+      category: debug
+      limit: 3
+      show_more: true
+      show_more_text: See more posts...
+      show_more_url: archive-debug.html
+
   - title: GCC posts
     post_list:
       category: gcc
